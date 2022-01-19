@@ -22,8 +22,8 @@ public class CreditApplication implements BaseEntity{
     @Column(name = "ID", nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="nationalIdNumber")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="nationalIdNumber", foreignKey = @ForeignKey(name = "FK_NATIONAL_ID_NUMBER"))
     private User user;
 
     private LocalDateTime applicationDate;
