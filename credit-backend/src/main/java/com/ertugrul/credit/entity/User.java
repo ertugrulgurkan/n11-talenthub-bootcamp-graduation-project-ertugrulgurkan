@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,7 +23,7 @@ public class User implements BaseEntity {
     @GeneratedValue(generator = "generator")
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable=false)
     private String nationalIdNumber;
 
     private Double monthlyIncome;
@@ -34,6 +35,12 @@ public class User implements BaseEntity {
     private String surname;
 
     private String phone;
+
+    @OneToOne(mappedBy = "user")
+    private CreditScore creditScore;
+
+    @OneToMany(mappedBy = "user")
+    private List<CreditApplication> creditApplications;
 
     @Override
     public boolean equals(Object o) {
