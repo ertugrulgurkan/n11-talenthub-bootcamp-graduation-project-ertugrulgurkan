@@ -9,7 +9,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -27,8 +27,8 @@ public class User implements BaseEntity {
     private Long id;
 
     @NotBlank(message = "National Id Number is mandatory")
-    @Size(min = 11, max = 11, message = "National Id Number should be 11 characters.")
     @Column(unique = true, nullable = false, length = 11)
+    @Pattern(regexp = "[\\d]{11}", message = "National Id Number should contain 11 digits!")
     private String nationalIdNumber;
 
     @Past()

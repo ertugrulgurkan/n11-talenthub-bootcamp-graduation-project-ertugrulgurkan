@@ -4,14 +4,14 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 public class UserRequestDto implements Serializable {
     @NotBlank(message = "National Id Number is mandatory")
-    @Size(min = 11, max = 11, message = "National Id Number should be 11 characters.")
+    @Pattern(regexp = "[\\d]{11}", message = "National Id Number should contain 11 digits!")
     private final String nationalIdNumber;
     @Past()
     private final LocalDate birthDate;

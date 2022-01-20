@@ -27,7 +27,6 @@ public class UserService {
 
     @Transactional
     public UserResponseDto create(UserRequestDto userRequestDto) {
-        //todo validation userRequestDto
         User user = UserMapper.INSTANCE.convertUserRequestDtoToUser(userRequestDto);
         User savedUser = userEntityService.save(user);
         return UserMapper.INSTANCE.convertUserResponseDtoToUser(savedUser);
@@ -35,7 +34,6 @@ public class UserService {
 
     @Transactional
     public UserResponseDto update(UserRequestDto userRequestDto, String nationalIdNumber) {
-        //todo validation userRequestDto
         User userRequestEntity = UserMapper.INSTANCE.convertUserRequestDtoToUser(userRequestDto);
         User user = findUserByNationalIdNumber(nationalIdNumber);
 
