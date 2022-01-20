@@ -46,6 +46,7 @@ public class User implements BaseEntity {
     @NotBlank(message = "Phone is mandatory")
     private String phone;
 
+    //todo move to the creditApplication
     private Long creditScore;
 
     @OneToMany(mappedBy = "user")

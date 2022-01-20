@@ -26,7 +26,11 @@ public class CreditApplication implements BaseEntity {
     @JoinColumn(name = "nationalIdNumber", foreignKey = @ForeignKey(name = "FK_NATIONAL_ID_NUMBER"))
     private User user;
 
+    private Double assurance;
+
     private LocalDateTime applicationDate;
+
+    private Double creditLimitAmount;
 
     private CreditApplicationResult creditApplicationResult;
 

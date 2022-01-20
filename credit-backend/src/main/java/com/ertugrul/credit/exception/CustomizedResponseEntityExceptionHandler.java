@@ -25,6 +25,11 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return getErrorResponse(ex, webRequest, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleCreditApplicationNotFoundException(CreditApplicationNotFoundException ex, WebRequest webRequest) {
+        return getErrorResponse(ex, webRequest, HttpStatus.NOT_FOUND);
+    }
+
     private ResponseEntity<Object> getErrorResponse(Exception ex, WebRequest webRequest, HttpStatus notFound) {
         Date errorDate = new Date();
         String description = webRequest.getDescription(false);

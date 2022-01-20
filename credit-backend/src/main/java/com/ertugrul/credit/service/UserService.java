@@ -75,7 +75,7 @@ public class UserService {
         return validationService.validateUser(optionalUser);
     }
 
-    private User findUserByNationalIdNumber(String nationalIdNumber) {
+    protected User findUserByNationalIdNumber(String nationalIdNumber) {
         Optional<User> optionalUser = userEntityService.findByNationalIdNumber(nationalIdNumber);
         return validationService.validateUser(optionalUser);
     }

@@ -50,7 +50,7 @@ public class UserController {
 
     //PUT http://localhost:8080/api/v1/users/id-number/13241052323'
     @PutMapping("/{nationalIdNumber}")
-    public ResponseEntity<Object> create(@Valid @RequestBody UserRequestDto userRequestDto, @PathVariable String nationalIdNumber) {
+    public ResponseEntity<Object> update(@Valid @RequestBody UserRequestDto userRequestDto, @PathVariable String nationalIdNumber) {
         return ResponseEntity.ok(userService.update(userRequestDto, nationalIdNumber));
     }
 
