@@ -1,9 +1,9 @@
 package com.ertugrul.credit.rule;
 
 
-import com.ertugrul.credit.dto.CreditCalculationDto;
+import com.ertugrul.credit.entity.CreditApplication;
 
 public interface CreditCalculationRule {
 
-    double calculate(CreditCalculationDto creditCalculationDto);
+    double calculate(CreditApplication creditApplication);
 }

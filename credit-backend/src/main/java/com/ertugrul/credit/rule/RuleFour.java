@@ -1,15 +1,15 @@
 package com.ertugrul.credit.rule;
 
-import com.ertugrul.credit.dto.CreditCalculationDto;
+import com.ertugrul.credit.entity.CreditApplication;
 import com.ertugrul.credit.util.Constant;
 
 public class RuleFour implements CreditCalculationRule {
     @Override
-    public double calculate(CreditCalculationDto creditCalculationDto) {
+    public double calculate(CreditApplication creditApplication) {
         double amount = 0;
-        long creditScore = creditCalculationDto.getCreditScore();
-        double monthlyIncome = creditCalculationDto.getMonthlyIncome();
-        double assurance = creditCalculationDto.getAssurance();
+        long creditScore = creditApplication.getCreditScore();
+        double monthlyIncome = creditApplication.getMonthlyIncome();
+        double assurance = creditApplication.getAssurance();
 
         if (creditScore >= 1_000) {
             amount = (monthlyIncome * Constant.CREDIT_LIMIT_MULTIPLIER) + (assurance * 50 / 100);

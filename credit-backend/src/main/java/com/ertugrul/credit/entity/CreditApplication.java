@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,6 +27,9 @@ public class CreditApplication implements BaseEntity {
     @JoinColumn(name = "nationalIdNumber", foreignKey = @ForeignKey(name = "FK_NATIONAL_ID_NUMBER"))
     private User user;
 
+    @NotBlank(message = "Monthly Income is mandatory")
+    private Double monthlyIncome;
+
     private Double assurance;
 
     private LocalDateTime applicationDate;
@@ -33,5 +37,8 @@ public class CreditApplication implements BaseEntity {
     private Double creditLimitAmount;
 
     private CreditApplicationResult creditApplicationResult;
+
+    @Transient
+    private Long creditScore;
 
 }

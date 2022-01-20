@@ -3,7 +3,6 @@ package com.ertugrul.credit.service;
 
 import com.ertugrul.credit.dto.CreditApplicationRequestDto;
 import com.ertugrul.credit.dto.CreditApplicationResponseDto;
-import com.ertugrul.credit.dto.CreditCalculationDto;
 import com.ertugrul.credit.entity.CreditApplication;
 import com.ertugrul.credit.entity.User;
 import com.ertugrul.credit.enums.CreditApplicationResult;
@@ -25,21 +24,24 @@ public class CreditApplicationService {
     private final CreditApplicationEntityService creditApplicationEntityService;
     private final ValidationService validationService;
     private final CreditAmountCalculator creditAmountCalculator;
+    private final CreditScoreService creditScoreService;
 
     @Transactional
     public CreditApplicationResponseDto create(CreditApplicationRequestDto creditApplicationRequestDto) {
         CreditApplication creditApplication = CreditApplicationMapper.INSTANCE.convertCreditApplicationRequestDtoToCreditApplication(creditApplicationRequestDto);
         User user = creditApplication.getUser();
         user = userService.findUserByNationalIdNumber(user.getNationalIdNumber());
+        Long creditScore = creditScoreService.calculateCreditScore(creditApplication.getMonthlyIncome(), user.getNationalIdNumber());
         creditApplication.setUser(user);
         creditApplication.setApplicationDate(LocalDateTime.now());
-        calculateCreditLimit(creditApplication, user);
+        creditApplication.setCreditScore(creditScore);
+        calculateCreditLimit(creditApplication);
         CreditApplication savedApplication = creditApplicationEntityService.save(creditApplication);
         return CreditApplicationMapper.INSTANCE.convertCreditApplicationResponseDtoToCreditApplication(savedApplication);
     }
 
-    private void calculateCreditLimit(CreditApplication creditApplication, User user) {
-        double creditAmount = creditAmountCalculator.getCreditAmount(new CreditCalculationDto(user.getMonthlyIncome(), creditApplication.getAssurance(), user.getCreditScore()));
+    private void calculateCreditLimit(CreditApplication creditApplication) {
+        double creditAmount = creditAmountCalculator.getCreditLimitAmount(creditApplication);
         CreditApplicationResult creditApplicationResult = creditAmount > 0 ? CreditApplicationResult.APPROVED : CreditApplicationResult.REJECTED;
         creditApplication.setCreditApplicationResult(creditApplicationResult);
         creditApplication.setCreditLimitAmount(creditAmount);

@@ -13,8 +13,6 @@ public class UserResponseDto implements Serializable {
     @NotBlank(message = "National Id Number is mandatory")
     @Size(min = 11, max = 11, message = "National Id Number should be 11 characters.")
     private final String nationalIdNumber;
-    @NotBlank(message = "Monthly Income is mandatory")
-    private final Double monthlyIncome;
     @Past()
     private final LocalDate birthDate;
     @NotBlank(message = "Name is mandatory")

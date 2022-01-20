@@ -31,9 +31,6 @@ public class User implements BaseEntity {
     @Column(unique = true, nullable = false, length = 11)
     private String nationalIdNumber;
 
-    @NotBlank(message = "Monthly Income is mandatory")
-    private Double monthlyIncome;
-
     @Past()
     private LocalDate birthDate;
 
@@ -45,9 +42,6 @@ public class User implements BaseEntity {
 
     @NotBlank(message = "Phone is mandatory")
     private String phone;
-
-    //todo move to the creditApplication
-    private Long creditScore;
 
     @OneToMany(mappedBy = "user")
     private List<CreditApplication> creditApplications;

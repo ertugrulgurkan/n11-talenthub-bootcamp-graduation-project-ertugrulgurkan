@@ -17,7 +17,6 @@ import java.util.Optional;
 public class UserService {
     private final UserEntityService userEntityService;
     private final ValidationService validationService;
-    private final CreditScoreService creditScoreService;
 
     public List<UserResponseDto> findAll() {
 
@@ -30,8 +29,6 @@ public class UserService {
     public UserResponseDto create(UserRequestDto userRequestDto) {
         //todo validation userRequestDto
         User user = UserMapper.INSTANCE.convertUserRequestDtoToUser(userRequestDto);
-        Long creditScore = creditScoreService.calculateCreditScore(user.getMonthlyIncome(), user.getNationalIdNumber());
-        user.setCreditScore(creditScore);
         User savedUser = userEntityService.save(user);
         return UserMapper.INSTANCE.convertUserResponseDtoToUser(savedUser);
     }
@@ -81,7 +78,6 @@ public class UserService {
     }
 
     private void fillUserProperties(User userRequestEntity, User user) {
-        user.setMonthlyIncome(userRequestEntity.getMonthlyIncome());
         user.setName(userRequestEntity.getName());
         user.setBirthDate(userRequestEntity.getBirthDate());
         user.setPhone(userRequestEntity.getPhone());

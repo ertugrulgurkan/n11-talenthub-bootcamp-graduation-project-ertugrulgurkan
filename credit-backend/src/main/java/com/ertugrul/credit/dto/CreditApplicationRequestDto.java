@@ -12,4 +12,6 @@ public class CreditApplicationRequestDto implements Serializable {
     @Size(min = 11, max = 11, message = "National Id Number should be 11 characters.")
     private final String userNationalIdNumber;
     private final Double assurance;
+    @NotBlank(message = "Monthly Income is mandatory")
+    private final Double monthlyIncome;
 }
