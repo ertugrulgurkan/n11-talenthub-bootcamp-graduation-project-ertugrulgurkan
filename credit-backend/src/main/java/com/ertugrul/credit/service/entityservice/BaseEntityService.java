@@ -3,7 +3,6 @@ package com.ertugrul.credit.service.entityservice;
 import com.ertugrul.credit.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;

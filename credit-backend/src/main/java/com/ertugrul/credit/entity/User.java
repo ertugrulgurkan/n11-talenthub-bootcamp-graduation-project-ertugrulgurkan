@@ -7,6 +7,9 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -23,21 +26,27 @@ public class User implements BaseEntity {
     @GeneratedValue(generator = "generator")
     private Long id;
 
-    @Column(unique = true, nullable=false)
+    @NotBlank(message = "National Id Number is mandatory")
+    @Size(min = 11, max = 11, message = "National Id Number should be 11 characters.")
+    @Column(unique = true, nullable = false, length = 11)
     private String nationalIdNumber;
 
+    @NotBlank(message = "Monthly Income is mandatory")
     private Double monthlyIncome;
 
+    @Past()
     private LocalDate birthDate;
 
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
+    @NotBlank(message = "Surname is mandatory")
     private String surname;
 
+    @NotBlank(message = "Phone is mandatory")
     private String phone;
 
-    @OneToOne(mappedBy = "user")
-    private CreditScore creditScore;
+    private Long creditScore;
 
     @OneToMany(mappedBy = "user")
     private List<CreditApplication> creditApplications;

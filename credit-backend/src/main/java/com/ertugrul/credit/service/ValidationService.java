@@ -4,7 +4,6 @@ import com.ertugrul.credit.entity.User;
 import com.ertugrul.credit.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
