@@ -2,6 +2,7 @@ package com.ertugrul.credit.mapper;
 
 import com.ertugrul.credit.dto.CreditApplicationRequestDto;
 import com.ertugrul.credit.dto.CreditApplicationResponseDto;
+import com.ertugrul.credit.dto.CreditApplicationResultDto;
 import com.ertugrul.credit.entity.CreditApplication;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -53,4 +54,13 @@ public interface CreditApplicationMapper {
     @Mapping(source = "userPhone", target = "user.phone")
     @Mapping(source = "userBirthDate", target = "user.birthDate")
     List<CreditApplicationResponseDto> convertAllCreditApplicationToCreditApplicationResponseDto(List<CreditApplication> CreditApplication);
+
+    @Mapping(target = "userNationalIdNumber", source = "user.nationalIdNumber")
+    CreditApplicationResultDto convertCreditApplicationToCreditApplicationResultDto(CreditApplication creditApplication);
+
+    @Mapping(target = "userNationalIdNumber", source = "user.nationalIdNumber")
+    List<CreditApplicationResultDto> convertAllCreditApplicationToCreditApplicationResultDto(List<CreditApplication> creditApplicationList);
+
+    @Mapping(source = "userNationalIdNumber", target = "user.nationalIdNumber")
+    CreditApplication convertCreditApplicationResultDtoToCreditApplication(CreditApplicationResultDto creditApplicationResultDto);
 }

@@ -3,7 +3,6 @@ package com.ertugrul.credit.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -18,7 +17,6 @@ import java.util.Objects;
 @Table(name = "USERS")
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 public class User implements BaseEntity {
     @SequenceGenerator(name = "generator", sequenceName = "USER_ID_SEQ", allocationSize = 1)

@@ -17,17 +17,8 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    // GET http://localhost:8080/api/v1/users/1
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getById(@PathVariable Long id) {
-
-        UserResponseDto userDto = userService.findById(id);
-
-        return ResponseEntity.ok(userDto);
-    }
-
-    // GET http://localhost:8080/api/v1/users/id-number/13241052323'
-    @GetMapping("/id-number/{nationalIdNumber}")
+    // GET http://localhost:8080/api/v1/users/13241052323'
+    @GetMapping("/{nationalIdNumber}")
     public ResponseEntity<Object> getByNationalIdNumber(@PathVariable String nationalIdNumber) {
 
         UserResponseDto userResponseDto = userService.findByNationalIdNumber(nationalIdNumber);
@@ -48,16 +39,16 @@ public class UserController {
         return ResponseEntity.ok(userService.create(userRequestDto));
     }
 
-    //PUT http://localhost:8080/api/v1/users/id-number/13241052323'
+    //PUT http://localhost:8080/api/v1/users/13241052323'
     @PutMapping("/{nationalIdNumber}")
     public ResponseEntity<Object> update(@Valid @RequestBody UserRequestDto userRequestDto, @PathVariable String nationalIdNumber) {
         return ResponseEntity.ok(userService.update(userRequestDto, nationalIdNumber));
     }
 
-    //DELETE http://localhost:8080/api/v1/users/1
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        userService.deleteById(id);
+    //DELETE http://localhost:8080/api/v1/users/13241052323
+    @DeleteMapping("/{nationalIdNumber}")
+    public void deleteByNationalIdNumber(@PathVariable String nationalIdNumber) {
+        userService.deleteByNationalIdNumber(nationalIdNumber);
     }
 
 }
