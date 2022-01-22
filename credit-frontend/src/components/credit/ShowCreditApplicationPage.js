@@ -11,20 +11,20 @@ class ShowCreditApplicationPage extends React.Component {
   state = {
     creditApplicationResponse: [],
     errorMessage: "",
-    showAlert : false,
+    showAlert: false,
     showForm: true,
-    showResult: false
+    showResult: false,
   };
 
   handleFormSubmit = (e) => {
     e.preventDefault();
-    const data = serialize(e.target, { hash: true })
+    const data = serialize(e.target, { hash: true });
 
     const nationalIdNumber = data.nationalIdNumber;
     const birthDate = data.birthDate;
     //console.log(nationalIdNumber)
     //console.log(birthDate)
-    this.showApplication(nationalIdNumber,birthDate)
+    this.showApplication(nationalIdNumber, birthDate);
   };
 
   showApplication(nationalIdNumber, birthDate) {
@@ -34,14 +34,24 @@ class ShowCreditApplicationPage extends React.Component {
   }
 
   handleResponse(response) {
-      console.log(response)
-    this.setState({ creditApplicationResponse: response.data, showAlert: false, showForm:false, showResult: true });
+    //console.log (response)
+    this.setState({
+      creditApplicationResponse: response.data,
+      showAlert: false,
+      showForm: false,
+      showResult: true,
+    });
   }
 
   handleError(error) {
     if (error === undefined) return;
-    this.setState({ errorMessage: error.response.data.errors.join(" ") , showAlert: true,showForm:true , showResult: false });
-    console.log(error.response.data);
+    this.setState({
+      errorMessage: error.response.data.errors.join(" "),
+      showAlert: true,
+      showForm: true,
+      showResult: false,
+    });
+    //console.log(error.response.data);
   }
 
   clearForm() {
@@ -51,37 +61,41 @@ class ShowCreditApplicationPage extends React.Component {
   render() {
     return (
       <>
-                <PageTitle title="Show Credit Application"></PageTitle>
+        <PageTitle title="Show Credit Application"></PageTitle>
         <div className="container col-md-6 offset-md-3">
-        { this.state.showForm ?  
-          <Form
-            id="apply-credit-form"
-            className="mt-5"
-            onSubmit={this.handleFormSubmit}
-          >
-            <Form.Group className="mb-3">
-              <Form.Label htmlFor="nationalIdNumber">
-                National Id Number
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="nationalIdNumber"
-                maxLength={11}
-                minLength={11}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label htmlFor="birthDate">Birth Date</Form.Label>
-              <Form.Control type="date" name="birthDate" required />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Apply
-            </Button>
-          </Form>
-          : null }
+          {this.state.showForm ? (
+            <Form
+              id="apply-credit-form"
+              className="mt-5"
+              onSubmit={this.handleFormSubmit}
+            >
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="nationalIdNumber">
+                  National Id Number
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="nationalIdNumber"
+                  maxLength={11}
+                  minLength={11}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="birthDate">Birth Date</Form.Label>
+                <Form.Control type="date" name="birthDate" required />
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                Apply
+              </Button>
+            </Form>
+          ) : null}
           {this.state.errorMessage && (
-            <Alert variant="danger" className="mb-3 mt-3" show={this.state.showAlert}>
+            <Alert
+              variant="danger"
+              className="mb-3 mt-3"
+              show={this.state.showAlert}
+            >
               <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
               <p>{this.state.errorMessage}</p>
             </Alert>
