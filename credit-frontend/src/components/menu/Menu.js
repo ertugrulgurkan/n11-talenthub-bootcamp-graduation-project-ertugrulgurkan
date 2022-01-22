@@ -22,11 +22,8 @@ class Menu extends React.Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/add-user">Add User</Nav.Link>
-                            <Nav.Link href="/update-user">Update User</Nav.Link>
-                            <Nav.Link href="/delete-user">Delete User</Nav.Link>
                             <Nav.Link href="/apply-credit">Apply for a Credit</Nav.Link>
-                            <Nav.Link href="/show-applications">View Applications</Nav.Link>
+                            <Nav.Link href="/show-credit-application">Show Credit Application</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
