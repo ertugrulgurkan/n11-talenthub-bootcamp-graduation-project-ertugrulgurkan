@@ -16,7 +16,7 @@ public class CreditApplicationEntityService extends BaseEntityService<CreditAppl
         super(creditApplicationRepository);
     }
 
-    public Optional<List<CreditApplication>> findCreditApplicationByNationalIdNumberAndBirthDate(String nationalIdNumber, LocalDate birthDate) {
+    public Optional<CreditApplication> findCreditApplicationByNationalIdNumberAndBirthDate(String nationalIdNumber, LocalDate birthDate) {
         return getRepository().findCreditApplicationByUserNationalIdNumberAndUserBirthDate(nationalIdNumber, birthDate);
     }
 }

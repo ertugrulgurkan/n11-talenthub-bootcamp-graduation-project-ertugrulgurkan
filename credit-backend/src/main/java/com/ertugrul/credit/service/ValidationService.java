@@ -21,10 +21,10 @@ public class ValidationService {
         return user.get();
     }
 
-    public List<CreditApplication> validateCreditApplicationList(Optional<List<CreditApplication>> creditApplicationList) {
-        if (creditApplicationList.isEmpty()) {
-            throw new CreditApplicationNotFoundException("No Credit Application has been found!");
+    public CreditApplication validateCreditApplication(Optional<CreditApplication> creditApplication) {
+        if (creditApplication.isEmpty()) {
+            throw new CreditApplicationNotFoundException("Credit Application has been found!");
         }
-        return creditApplicationList.get();
+        return creditApplication.get();
     }
 }

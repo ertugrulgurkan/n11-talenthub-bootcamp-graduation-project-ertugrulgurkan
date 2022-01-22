@@ -11,5 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface CreditApplicationRepository extends JpaRepository<CreditApplication, Long> {
-    Optional<List<CreditApplication>> findCreditApplicationByUserNationalIdNumberAndUserBirthDate(String nationalIdNumber, LocalDate birthDate);
+    Optional<CreditApplication> findCreditApplicationByUserNationalIdNumberAndUserBirthDate(String nationalIdNumber, LocalDate birthDate);
 }
