@@ -58,7 +58,8 @@ class ApplyCreditPage extends React.Component {
                 <Form.Control
                   type="text"
                   name="nationalIdNumber"
-                  htmlSize={11}
+                  maxLength={11}
+                  minLength={11}
                   required
                 />
               </Form.Group>
