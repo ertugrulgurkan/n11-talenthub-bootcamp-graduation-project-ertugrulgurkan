@@ -22,8 +22,8 @@ public class CreditApplication implements BaseEntity {
     @Column(name = "ID", nullable = false)
     private Long id;
 
-    @ManyToOne()
-    @JoinColumn(name = "nationalIdNumber", foreignKey = @ForeignKey(name = "FK_NATIONAL_ID_NUMBER"))
+    @OneToOne()
+    @JoinColumn(name = "user_national_id_number", referencedColumnName = "id")
     private User user;
 
     @NotNull(message = "Monthly Income is mandatory")
@@ -36,6 +36,7 @@ public class CreditApplication implements BaseEntity {
 
     private Double creditLimitAmount;
 
+    @Enumerated(EnumType.STRING)
     private CreditApplicationResult creditApplicationResult;
 
     @Transient

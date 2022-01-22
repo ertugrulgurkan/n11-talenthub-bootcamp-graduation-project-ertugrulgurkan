@@ -26,14 +26,12 @@ public class UserService {
         return UserMapper.INSTANCE.convertAllUserToUserResponseDto(userList);
     }
 
-    @Transactional
-    public UserResponseDto create(UserRequestDto userRequestDto) {
-        User user = UserMapper.INSTANCE.convertUserRequestDtoToUser(userRequestDto);
+    @Transactional(Transactional.TxType.REQUIRED)
+    public User saveUserToEntity(User user) {
         Optional<User> byNationalIdNumber = userEntityService.findByNationalIdNumber(user.getNationalIdNumber());
         if (byNationalIdNumber.isPresent())
             throw new UserAlreadyExistException("User has already exist.");
-        User savedUser = userEntityService.save(user);
-        return UserMapper.INSTANCE.convertUserResponseDtoToUser(savedUser);
+        return userEntityService.save(user);
     }
 
     @Transactional

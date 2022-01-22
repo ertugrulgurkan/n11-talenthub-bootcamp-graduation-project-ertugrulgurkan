@@ -20,7 +20,7 @@ public class CreditApplicationController {
     //POST http://localhost:8080/api/v1/credit-applications
     @PostMapping
     public ResponseEntity<Object> create(@Valid @RequestBody CreditApplicationRequestDto creditApplicationRequestDto) {
-        return ResponseEntity.ok(creditApplicationService.create(creditApplicationRequestDto));
+        return ResponseEntity.ok(creditApplicationService.saveCreditApplication(creditApplicationRequestDto));
     }
 
     //GET http://localhost:8080/api/v1/credit-applications/

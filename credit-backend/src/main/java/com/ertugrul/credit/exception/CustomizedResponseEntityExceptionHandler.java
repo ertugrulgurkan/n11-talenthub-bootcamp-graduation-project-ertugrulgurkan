@@ -1,70 +1,72 @@
 package com.ertugrul.credit.exception;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.LinkedHashMap;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 //custom exceptionların tutulduğu sınıf
 @ControllerAdvice
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler
-    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest webRequest) {
-        return getErrorResponse(ex, webRequest, HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
+        ApiError apiError = new ApiError(
+                HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
+        return new ResponseEntity<Object>(
+                apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler
     public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex, WebRequest webRequest) {
-        return getErrorResponse(ex, webRequest, HttpStatus.NOT_FOUND);
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), ex.getMessage());
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler
     public final ResponseEntity<Object> handleCreditApplicationNotFoundException(CreditApplicationNotFoundException ex, WebRequest webRequest) {
-        return getErrorResponse(ex, webRequest, HttpStatus.NOT_FOUND);
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), ex.getMessage());
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler
     public final ResponseEntity<Object> handleUserAlreadyExistException(UserAlreadyExistException ex, WebRequest webRequest) {
-        return getErrorResponse(ex, webRequest, HttpStatus.BAD_REQUEST);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex.getMessage());
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler({ConstraintViolationException.class, TransactionSystemException.class})
+    public ResponseEntity<Object> handleConstraintViolation(
+            ConstraintViolationException ex, WebRequest request) {
+        List<String> errors = new ArrayList<String>();
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            errors.add(violation.getMessage());
+        }
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("date", LocalDateTime.now().toString());
-        body.put("status", status.value());
-
-        List<String> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList());
-        body.put("errors", errors);
-        return new ResponseEntity<Object>(body, status);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    private ResponseEntity<Object> getErrorResponse(Exception ex, WebRequest webRequest, HttpStatus notFound) {
-        Date errorDate = new Date();
-        String description = webRequest.getDescription(false);
-        ExceptionResponse exceptionResponse = new ExceptionResponse(errorDate, ex.getMessage(), description);
-        return new ResponseEntity<>(exceptionResponse, notFound);
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
+            MethodArgumentTypeMismatchException ex, WebRequest request) {
+        String error =
+                ex.getName() + " should be of type " + ex.getRequiredType().getName();
+
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
 }

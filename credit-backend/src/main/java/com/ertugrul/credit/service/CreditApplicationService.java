@@ -1,6 +1,5 @@
 package com.ertugrul.credit.service;
 
-
 import com.ertugrul.credit.dto.CreditApplicationRequestDto;
 import com.ertugrul.credit.dto.CreditApplicationResultDto;
 import com.ertugrul.credit.entity.CreditApplication;
@@ -30,10 +29,9 @@ public class CreditApplicationService {
     private final CreditScoreService creditScoreService;
 
     @Transactional
-    public CreditApplicationResultDto create(CreditApplicationRequestDto creditApplicationRequestDto) {
+    public CreditApplicationResultDto saveCreditApplication(CreditApplicationRequestDto creditApplicationRequestDto) {
         CreditApplication creditApplication = CreditApplicationMapper.INSTANCE.convertCreditApplicationRequestDtoToCreditApplication(creditApplicationRequestDto);
-        User userFromDto = creditApplication.getUser();
-        User user = userService.findUserByNationalIdNumber(userFromDto.getNationalIdNumber());
+        User user = userService.saveUserToEntity(creditApplication.getUser());
         fillCreditApplicationEntity(creditApplication, user);
         CreditApplication savedApplication = creditApplicationEntityService.save(creditApplication);
         return CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(savedApplication);

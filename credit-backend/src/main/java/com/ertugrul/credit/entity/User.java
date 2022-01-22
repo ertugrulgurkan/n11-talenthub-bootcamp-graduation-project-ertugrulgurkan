@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -29,7 +28,7 @@ public class User implements BaseEntity {
     @Pattern(regexp = "[\\d]{11}", message = "National Id Number should contain 11 digits!")
     private String nationalIdNumber;
 
-    @Past()
+    @Past(message = "BirthDate must be a past date")
     private LocalDate birthDate;
 
     @NotBlank(message = "Name is mandatory")
@@ -41,8 +40,9 @@ public class User implements BaseEntity {
     @NotBlank(message = "Phone is mandatory")
     private String phone;
 
-    @OneToMany(mappedBy = "user")
-    private List<CreditApplication> creditApplications;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private CreditApplication creditApplication;
 
     @Override
     public boolean equals(Object o) {

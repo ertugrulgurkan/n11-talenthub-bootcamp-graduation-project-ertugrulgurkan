@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 
 @Data
 public class CreditApplicationResponseDto implements Serializable {
-    private final String userNationalIdNumber;
-    private final LocalDate userBirthDate;
-    private final String userName;
-    private final String userSurname;
-    private final String userPhone;
+    private final String nationalIdNumber;
+    private final LocalDate birthDate;
+    private final String name;
+    private final String surname;
+    private final String phone;
     private final Double monthlyIncome;
     private final Double creditLimitAmount;
     private final Double assurance;

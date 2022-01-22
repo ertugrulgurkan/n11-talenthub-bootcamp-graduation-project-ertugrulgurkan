@@ -15,16 +15,16 @@ import java.util.Optional;
 public class ValidationService {
 
     public User validateUser(Optional<User> user) {
-        if (user.isPresent()) {
-            return user.get();
-        } else
+        if (user.isEmpty()) {
             throw new UserNotFoundException("User not found!");
+        }
+        return user.get();
     }
 
     public List<CreditApplication> validateCreditApplicationList(Optional<List<CreditApplication>> creditApplicationList) {
-        if (creditApplicationList.isPresent()) {
-            return creditApplicationList.get();
-        } else
+        if (creditApplicationList.isEmpty()) {
             throw new CreditApplicationNotFoundException("No Credit Application has been found!");
+        }
+        return creditApplicationList.get();
     }
 }

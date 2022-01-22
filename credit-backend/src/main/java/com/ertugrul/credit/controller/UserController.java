@@ -33,11 +33,6 @@ public class UserController {
         return ResponseEntity.ok(all);
     }
 
-    //POST http://localhost:8080/api/v1/users
-    @PostMapping
-    public ResponseEntity<Object> create(@Valid @RequestBody UserRequestDto userRequestDto) {
-        return ResponseEntity.ok(userService.create(userRequestDto));
-    }
 
     //PUT http://localhost:8080/api/v1/users/13241052323'
     @PutMapping("/{nationalIdNumber}")
