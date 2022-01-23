@@ -1,4 +1,4 @@
-package com.ertugrul.credit.service.entityservice;
+package com.ertugrul.credit.service.entityservice.impl;
 
 import com.ertugrul.credit.entity.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -25,6 +25,10 @@ public abstract class BaseEntityService<E extends BaseEntity, R extends JpaRepos
 
     public void delete(E e) {
         repository.delete(e);
+    }
+
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 
     public R getRepository() {

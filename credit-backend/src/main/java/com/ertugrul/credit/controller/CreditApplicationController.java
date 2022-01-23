@@ -1,7 +1,7 @@
 package com.ertugrul.credit.controller;
 
 import com.ertugrul.credit.dto.CreditApplicationRequestDto;
-import com.ertugrul.credit.service.CreditApplicationService;
+import com.ertugrul.credit.service.impl.CreditApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

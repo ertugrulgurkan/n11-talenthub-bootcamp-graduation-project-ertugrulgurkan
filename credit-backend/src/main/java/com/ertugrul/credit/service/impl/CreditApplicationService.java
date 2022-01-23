@@ -1,4 +1,4 @@
-package com.ertugrul.credit.service;
+package com.ertugrul.credit.service.impl;
 
 import com.ertugrul.credit.dto.CreditApplicationRequestDto;
 import com.ertugrul.credit.dto.CreditApplicationResultDto;
@@ -7,6 +7,8 @@ import com.ertugrul.credit.entity.User;
 import com.ertugrul.credit.enums.CreditApplicationResult;
 import com.ertugrul.credit.mapper.CreditApplicationMapper;
 import com.ertugrul.credit.rule.CreditAmountCalculator;
+import com.ertugrul.credit.service.CreditScoreService;
+import com.ertugrul.credit.service.ValidationService;
 import com.ertugrul.credit.service.entityservice.CreditApplicationEntityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +23,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CreditApplicationService {
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final CreditApplicationEntityService creditApplicationEntityService;
     private final ValidationService validationService;
     private final CreditAmountCalculator creditAmountCalculator;
