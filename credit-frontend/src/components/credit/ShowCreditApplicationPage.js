@@ -78,6 +78,7 @@ class ShowCreditApplicationPage extends React.Component {
                   name="nationalIdNumber"
                   maxLength={11}
                   minLength={11}
+                  pattern="[0-9]*"
                   required
                 />
               </Form.Group>

@@ -61,10 +61,10 @@ class ApplyCreditPage extends React.Component {
           {this.state.showForm ? (
             <Form
               id="apply-credit-form"
-              className="mt-5"
+              className="mt-1"
               onSubmit={this.handleFormSubmit}
             >
-              <Form.Group className="mb-3">
+              <Form.Group className="">
                 <Form.Label htmlFor="nationalIdNumber">
                   National Id Number
                 </Form.Label>
@@ -73,32 +73,47 @@ class ApplyCreditPage extends React.Component {
                   name="nationalIdNumber"
                   maxLength={11}
                   minLength={11}
+                  pattern="[0-9]*"
                   required
                 />
+                <Form.Text className="text-muted">Required</Form.Text>
               </Form.Group>
-              <Form.Group className="mb-3">
+              <Form.Group className="">
                 <Form.Label htmlFor="birthDate">Birth Date</Form.Label>
                 <Form.Control type="date" name="birthDate" required />
+                <Form.Text className="text-muted">Required</Form.Text>
               </Form.Group>
-              <Form.Group className="mb-3">
+              <Form.Group className="">
                 <Form.Label htmlFor="name">Name</Form.Label>
                 <Form.Control type="text" name="name" required />
+                <Form.Text className="text-muted">Required</Form.Text>
               </Form.Group>
-              <Form.Group className="mb-3">
+              <Form.Group className="">
                 <Form.Label htmlFor="surname">Surname</Form.Label>
                 <Form.Control type="text" name="surname" required />
+                <Form.Text className="text-muted">Required</Form.Text>
               </Form.Group>
-              <Form.Group className="mb-3">
+              <Form.Group className="">
                 <Form.Label htmlFor="monthlyIncome">Monthly Income</Form.Label>
-                <Form.Control name="monthlyIncome" required />
+                <Form.Control name="monthlyIncome" maxLength={7} pattern="[0-9]*" required />
+                <Form.Text className="text-muted">Required</Form.Text>
               </Form.Group>
-              <Form.Group className="mb-3">
+              <Form.Group className="">
                 <Form.Label htmlFor="phone">Phone</Form.Label>
-                <Form.Control name="phone" required />
+                <Form.Control
+                  name="phone"
+                  required
+                  maxLength={10}
+                  minLength={10}
+                  pattern="[0-9]*"
+                />
+                <Form.Text className="text-muted">
+                  Please fill this format: 5349876543
+                </Form.Text>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label htmlFor="assurance">Assurance</Form.Label>
-                <Form.Control name="assurance" />
+                <Form.Control name="assurance" maxLength={8} pattern="[0-9]*" />
               </Form.Group>
 
               <Button variant="primary" type="submit">
@@ -112,7 +127,7 @@ class ApplyCreditPage extends React.Component {
               className="mb-3 mt-3"
               show={this.state.showAlert}
             >
-              <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+              <Alert.Heading>You got an error!</Alert.Heading>
               <p>{this.state.errorMessage}</p>
             </Alert>
           )}
