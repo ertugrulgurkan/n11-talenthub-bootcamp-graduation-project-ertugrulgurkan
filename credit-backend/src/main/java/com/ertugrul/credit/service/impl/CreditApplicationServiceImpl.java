@@ -3,7 +3,6 @@ package com.ertugrul.credit.service.impl;
 import com.ertugrul.credit.dto.CreditApplicationRequestDto;
 import com.ertugrul.credit.dto.CreditApplicationResultDto;
 import com.ertugrul.credit.entity.CreditApplication;
-import com.ertugrul.credit.entity.User;
 import com.ertugrul.credit.enums.CreditApplicationResult;
 import com.ertugrul.credit.mapper.CreditApplicationMapper;
 import com.ertugrul.credit.rule.CreditAmountCalculator;
@@ -34,15 +33,14 @@ public class CreditApplicationServiceImpl implements CreditApplicationService {
     @Override
     public CreditApplicationResultDto saveCreditApplication(CreditApplicationRequestDto creditApplicationRequestDto) {
         CreditApplication creditApplication = CreditApplicationMapper.INSTANCE.convertCreditApplicationRequestDtoToCreditApplication(creditApplicationRequestDto);
-        User user = userService.saveUserToEntity(creditApplication.getUser());
-        fillCreditApplicationEntity(creditApplication, user);
+        userService.saveUserToEntity(creditApplication.getUser());
+        fillCreditApplicationEntity(creditApplication);
         CreditApplication savedApplication = creditApplicationEntityService.save(creditApplication);
         return CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(savedApplication);
     }
 
-    private void fillCreditApplicationEntity(CreditApplication creditApplication, User user) {
-        Long creditScore = creditScoreService.calculateCreditScore(creditApplication.getMonthlyIncome(), user.getNationalIdNumber());
-        creditApplication.setUser(user);
+    private void fillCreditApplicationEntity(CreditApplication creditApplication) {
+        Long creditScore = creditScoreService.calculateCreditScore(creditApplication.getMonthlyIncome(), creditApplication.getUser().getNationalIdNumber());
         creditApplication.setApplicationDate(LocalDateTime.now());
         creditApplication.setCreditScore(creditScore);
         double creditAmount = creditAmountCalculator.getCreditLimitAmount(creditApplication);

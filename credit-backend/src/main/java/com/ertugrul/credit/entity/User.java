@@ -40,8 +40,8 @@ public class User implements BaseEntity {
     @NotBlank(message = "Phone is mandatory")
     private String phone;
 
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @PrimaryKeyJoinColumn
     private CreditApplication creditApplication;
 
     @Override
