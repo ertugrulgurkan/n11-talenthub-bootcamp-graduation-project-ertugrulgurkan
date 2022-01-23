@@ -7,6 +7,7 @@ import com.ertugrul.credit.entity.User;
 import com.ertugrul.credit.enums.CreditApplicationResult;
 import com.ertugrul.credit.mapper.CreditApplicationMapper;
 import com.ertugrul.credit.rule.CreditAmountCalculator;
+import com.ertugrul.credit.service.CreditApplicationService;
 import com.ertugrul.credit.service.CreditScoreService;
 import com.ertugrul.credit.service.ValidationService;
 import com.ertugrul.credit.service.entityservice.CreditApplicationEntityService;
@@ -22,7 +23,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CreditApplicationService {
+public class CreditApplicationServiceImpl implements CreditApplicationService {
     private final UserServiceImpl userService;
     private final CreditApplicationEntityService creditApplicationEntityService;
     private final ValidationService validationService;
@@ -30,6 +31,7 @@ public class CreditApplicationService {
     private final CreditScoreService creditScoreService;
 
     @Transactional
+    @Override
     public CreditApplicationResultDto saveCreditApplication(CreditApplicationRequestDto creditApplicationRequestDto) {
         CreditApplication creditApplication = CreditApplicationMapper.INSTANCE.convertCreditApplicationRequestDtoToCreditApplication(creditApplicationRequestDto);
         User user = userService.saveUserToEntity(creditApplication.getUser());
@@ -49,7 +51,7 @@ public class CreditApplicationService {
         creditApplication.setCreditLimitAmount(creditAmount);
     }
 
-
+    @Override
     public CreditApplicationResultDto findCreditApplicationByNationalIdNumberAndBirthDate(String nationalIdNumber, LocalDate birthDate) {
         Optional<CreditApplication> creditApplicationByNationalIdNumberAndBirthDate = creditApplicationEntityService.findCreditApplicationByNationalIdNumberAndBirthDate(nationalIdNumber, birthDate);
         CreditApplication creditApplication = validationService.validateCreditApplication(creditApplicationByNationalIdNumberAndBirthDate);
