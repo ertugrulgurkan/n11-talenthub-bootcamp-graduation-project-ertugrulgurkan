@@ -1,9 +1,6 @@
 package com.ertugrul.credit.rule;
 
 
-import com.ertugrul.credit.entity.CreditApplication;
-
 public interface CreditCalculationRule {
-
-    double calculate(CreditApplication creditApplication);
+    double calculate(long creditScore, double monthlyIncome, double assurance);
 }
