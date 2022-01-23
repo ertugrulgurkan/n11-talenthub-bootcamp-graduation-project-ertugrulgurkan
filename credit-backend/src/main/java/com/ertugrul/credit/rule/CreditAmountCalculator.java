@@ -1,6 +1,7 @@
 package com.ertugrul.credit.rule;
 
 import com.ertugrul.credit.entity.CreditApplication;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
  * Rule Pattern for CreditAmount Calculation
  */
 @Component
+@Slf4j
 public class CreditAmountCalculator {
     List<CreditCalculationRule> calculationRules = new ArrayList<>();
 
@@ -28,6 +30,7 @@ public class CreditAmountCalculator {
         for (CreditCalculationRule calculationRule : calculationRules) {
             creditAmount += calculationRule.calculate(creditScore, monthlyIncome, assurance);
         }
+        log.info("creditAmount: " + creditAmount);
         return creditAmount;
     }
 }

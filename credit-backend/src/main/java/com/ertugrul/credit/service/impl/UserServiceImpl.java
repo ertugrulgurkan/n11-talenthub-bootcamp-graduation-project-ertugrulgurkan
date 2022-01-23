@@ -9,14 +9,12 @@ import com.ertugrul.credit.service.UserService;
 import com.ertugrul.credit.service.ValidationService;
 import com.ertugrul.credit.service.entityservice.UserEntityService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {

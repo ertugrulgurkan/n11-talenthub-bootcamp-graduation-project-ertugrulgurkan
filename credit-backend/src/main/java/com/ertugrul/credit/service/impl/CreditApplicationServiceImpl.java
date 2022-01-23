@@ -19,9 +19,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CreditApplicationServiceImpl implements CreditApplicationService {
     private final UserServiceImpl userService;
     private final CreditApplicationEntityService creditApplicationEntityService;
@@ -47,6 +47,8 @@ public class CreditApplicationServiceImpl implements CreditApplicationService {
         CreditApplicationResult creditApplicationResult = creditAmount > 0 ? CreditApplicationResult.APPROVED : CreditApplicationResult.REJECTED;
         creditApplication.setCreditApplicationResult(creditApplicationResult);
         creditApplication.setCreditLimitAmount(creditAmount);
+        log.info("Credit Application Result: " + creditApplicationResult);
+        log.info("Credit Limit Amount: " + creditAmount);
     }
 
     @Override

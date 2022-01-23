@@ -11,7 +11,7 @@ public class CreditScoreServiceImpl implements CreditScoreService {
     @Override
     public Long calculateCreditScore(Double monthlyIncome, String nationalIdNumber) {
         Long lastDigitOfId = Long.valueOf(nationalIdNumber.substring(10));
-        Long firstDigitOfId = Long.valueOf(nationalIdNumber.substring(0,1));
+        Long firstDigitOfId = Long.valueOf(nationalIdNumber.substring(0, 1));
         long creditScore = monthlyIncome.longValue() * Math.abs(lastDigitOfId + firstDigitOfId) / 100;
         log.info("Credit Score: " + creditScore);
         return creditScore;
