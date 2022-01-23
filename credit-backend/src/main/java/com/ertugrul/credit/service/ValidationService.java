@@ -9,4 +9,6 @@ public interface ValidationService {
     User validateUser(Optional<User> user);
 
     CreditApplication validateCreditApplication(Optional<CreditApplication> creditApplication);
+
+    Boolean validatePhoneNumber(String phoneNumber);
 }

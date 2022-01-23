@@ -3,11 +3,13 @@ package com.ertugrul.credit.service.impl;
 import com.ertugrul.credit.dto.CreditApplicationRequestDto;
 import com.ertugrul.credit.dto.CreditApplicationResultDto;
 import com.ertugrul.credit.entity.CreditApplication;
+import com.ertugrul.credit.entity.User;
 import com.ertugrul.credit.enums.CreditApplicationResult;
 import com.ertugrul.credit.mapper.CreditApplicationMapper;
 import com.ertugrul.credit.rule.CreditAmountCalculator;
 import com.ertugrul.credit.service.CreditApplicationService;
 import com.ertugrul.credit.service.CreditScoreService;
+import com.ertugrul.credit.service.UserNotificationService;
 import com.ertugrul.credit.service.ValidationService;
 import com.ertugrul.credit.service.entityservice.CreditApplicationEntityService;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +30,24 @@ public class CreditApplicationServiceImpl implements CreditApplicationService {
     private final ValidationService validationService;
     private final CreditAmountCalculator creditAmountCalculator;
     private final CreditScoreService creditScoreService;
+    private final UserNotificationService userNotificationService;
 
     @Transactional
     @Override
     public CreditApplicationResultDto saveCreditApplication(CreditApplicationRequestDto creditApplicationRequestDto) {
         CreditApplication creditApplication = CreditApplicationMapper.INSTANCE.convertCreditApplicationRequestDtoToCreditApplication(creditApplicationRequestDto);
-        userService.saveUserToEntity(creditApplication.getUser());
+        saveCreditApplicationUser(creditApplication);
         fillCreditApplicationEntity(creditApplication);
-        CreditApplication savedApplication = creditApplicationEntityService.save(creditApplication);
+        CreditApplication savedApplication = saveApplication(creditApplication);
+        notifyCustomer(savedApplication);
         return CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(savedApplication);
+    }
+
+    @Override
+    public CreditApplicationResultDto findCreditApplicationByNationalIdNumberAndBirthDate(String nationalIdNumber, LocalDate birthDate) {
+        Optional<CreditApplication> creditApplicationByNationalIdNumberAndBirthDate = creditApplicationEntityService.findCreditApplicationByNationalIdNumberAndBirthDate(nationalIdNumber, birthDate);
+        CreditApplication creditApplication = validationService.validateCreditApplication(creditApplicationByNationalIdNumberAndBirthDate);
+        return CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(creditApplication);
     }
 
     private void fillCreditApplicationEntity(CreditApplication creditApplication) {
@@ -51,10 +62,29 @@ public class CreditApplicationServiceImpl implements CreditApplicationService {
         log.info("Credit Limit Amount: " + creditAmount);
     }
 
-    @Override
-    public CreditApplicationResultDto findCreditApplicationByNationalIdNumberAndBirthDate(String nationalIdNumber, LocalDate birthDate) {
-        Optional<CreditApplication> creditApplicationByNationalIdNumberAndBirthDate = creditApplicationEntityService.findCreditApplicationByNationalIdNumberAndBirthDate(nationalIdNumber, birthDate);
-        CreditApplication creditApplication = validationService.validateCreditApplication(creditApplicationByNationalIdNumberAndBirthDate);
-        return CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(creditApplication);
+    private void notifyCustomer(CreditApplication creditApplication) {
+        User user = creditApplication.getUser();
+        StringBuilder notifyMessage = new StringBuilder();
+        notifyMessage.append("Dear ").append(user.getName()).append(" ").append(user.getSurname()).append(", ");
+        notifyMessage.append("your credit application has been ");
+        notifyMessage.append(creditApplication.getCreditApplicationResult()).append(". ");
+        if (CreditApplicationResult.APPROVED.equals(creditApplication.getCreditApplicationResult())) {
+            notifyMessage.append("Your credit limit: ");
+            notifyMessage.append(creditApplication.getCreditLimitAmount());
+            notifyMessage.append(". ");
+        }
+        notifyMessage.append("Thank you for your application.");
+        userNotificationService.notifyCustomer(creditApplication.getUser(), notifyMessage.toString());
     }
+
+    private CreditApplication saveApplication(CreditApplication creditApplication) {
+        return creditApplicationEntityService.save(creditApplication);
+    }
+
+    private void saveCreditApplicationUser(CreditApplication creditApplication) {
+        userService.saveUserToEntity(creditApplication.getUser());
+    }
+
+
+
 }

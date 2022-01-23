@@ -8,6 +8,8 @@ import com.ertugrul.credit.service.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
@@ -26,5 +28,12 @@ public class ValidationServiceImpl implements ValidationService {
             throw new CreditApplicationNotFoundException("Credit Application has been found!");
         }
         return creditApplication.get();
+    }
+
+    @Override
+    public Boolean validatePhoneNumber(String phoneNumber) {
+        Pattern pattern = Pattern.compile("^\\d{10}$");
+        Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.matches();
     }
 }
