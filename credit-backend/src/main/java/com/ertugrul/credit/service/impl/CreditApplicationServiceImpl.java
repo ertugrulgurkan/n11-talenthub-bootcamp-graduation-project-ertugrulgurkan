@@ -37,7 +37,10 @@ public class CreditApplicationServiceImpl implements CreditApplicationService {
     public CreditApplicationResultDto saveCreditApplication(CreditApplicationRequestDto creditApplicationRequestDto) {
         CreditApplication creditApplication = CreditApplicationMapper.INSTANCE.convertCreditApplicationRequestDtoToCreditApplication(creditApplicationRequestDto);
         saveCreditApplicationUser(creditApplication);
-        fillCreditApplicationEntity(creditApplication);
+        long creditScore = creditScoreService.calculateCreditScore(creditApplication.getMonthlyIncome(), creditApplication.getUser().getNationalIdNumber());
+        double creditAmount = creditAmountCalculator.getCreditLimitAmount(creditScore, creditApplication.getMonthlyIncome(), creditApplication.getAssurance());
+        CreditApplicationResult creditApplicationResult = creditAmount > 0 ? CreditApplicationResult.APPROVED : CreditApplicationResult.REJECTED;
+        fillCreditApplicationEntity(creditApplication, creditScore, creditAmount, creditApplicationResult);
         CreditApplication savedApplication = saveCreditApplication(creditApplication);
         notifyUser(savedApplication);
         return CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(savedApplication);
@@ -50,16 +53,14 @@ public class CreditApplicationServiceImpl implements CreditApplicationService {
         return CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(creditApplication);
     }
 
-    private void fillCreditApplicationEntity(CreditApplication creditApplication) {
-        Long creditScore = creditScoreService.calculateCreditScore(creditApplication.getMonthlyIncome(), creditApplication.getUser().getNationalIdNumber());
-        creditApplication.setApplicationDate(LocalDateTime.now());
-        creditApplication.setCreditScore(creditScore);
-        double creditAmount = creditAmountCalculator.getCreditLimitAmount(creditApplication);
-        CreditApplicationResult creditApplicationResult = creditAmount > 0 ? CreditApplicationResult.APPROVED : CreditApplicationResult.REJECTED;
-        creditApplication.setCreditApplicationResult(creditApplicationResult);
-        creditApplication.setCreditLimitAmount(creditAmount);
+    private void fillCreditApplicationEntity(CreditApplication creditApplication, long creditScore, double creditAmount, CreditApplicationResult creditApplicationResult) {
         log.info("Credit Application Result: " + creditApplicationResult);
         log.info("Credit Limit Amount: " + creditAmount);
+        log.info("Credit Score: " + creditScore);
+        creditApplication.setApplicationDate(LocalDateTime.now());
+        creditApplication.setCreditScore(creditScore);
+        creditApplication.setCreditApplicationResult(creditApplicationResult);
+        creditApplication.setCreditLimitAmount(creditAmount);
     }
 
     private void notifyUser(CreditApplication creditApplication) {

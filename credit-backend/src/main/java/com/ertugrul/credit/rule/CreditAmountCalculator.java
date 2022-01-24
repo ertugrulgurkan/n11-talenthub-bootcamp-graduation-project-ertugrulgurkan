@@ -22,11 +22,11 @@ public class CreditAmountCalculator {
         this.calculationRules.add(new RuleFour());
     }
 
-    public double getCreditLimitAmount(CreditApplication creditApplication) {
+    public double getCreditLimitAmount(Long creditScore, Double monthlyIncome, Double creditAssurance) {
         double creditAmount = 0.0;
-        long creditScore = creditApplication.getCreditScore() == null ? 0 : creditApplication.getCreditScore();
-        double monthlyIncome = creditApplication.getMonthlyIncome() == null ? 0 : creditApplication.getMonthlyIncome();
-        double assurance = creditApplication.getAssurance() == null ? 0 : creditApplication.getAssurance();
+        if (creditScore == null || monthlyIncome == null)
+            return creditAmount;
+        double assurance = creditAssurance == null ? 0 : creditAssurance;
         for (CreditCalculationRule calculationRule : calculationRules) {
             creditAmount += calculationRule.calculate(creditScore, monthlyIncome, assurance);
         }

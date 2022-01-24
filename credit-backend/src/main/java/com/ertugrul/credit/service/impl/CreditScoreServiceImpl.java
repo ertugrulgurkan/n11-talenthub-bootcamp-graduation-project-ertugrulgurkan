@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 public class CreditScoreServiceImpl implements CreditScoreService {
 
     @Override
-    public Long calculateCreditScore(Double monthlyIncome, String nationalIdNumber) {
-        Long lastDigitOfId = Long.valueOf(nationalIdNumber.substring(10));
-        Long firstDigitOfId = Long.valueOf(nationalIdNumber.substring(0, 1));
-        long creditScore = monthlyIncome.longValue() * Math.abs(lastDigitOfId + firstDigitOfId) / 100;
+    public long calculateCreditScore(Double monthlyIncome, String nationalIdNumber) {
+        if (monthlyIncome == null || nationalIdNumber == null)
+            return 0L;
+        long lastDigitOfId = Long.parseLong(nationalIdNumber.substring(10));
+        long firstDigitOfId = Long.parseLong(nationalIdNumber.substring(0, 1));
+        long creditScore = monthlyIncome.longValue() * Math.abs(lastDigitOfId + 1 + firstDigitOfId) / 100;
         log.info("Credit Score: " + creditScore);
         return creditScore;
     }
