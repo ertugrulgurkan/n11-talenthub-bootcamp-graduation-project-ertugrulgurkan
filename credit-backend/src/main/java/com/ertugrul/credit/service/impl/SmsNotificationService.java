@@ -17,12 +17,12 @@ public class SmsNotificationService implements UserNotificationService {
     }
 
     @Override
-    public void notifyCustomer(User user, String message) {
+    public void notifyUser(User user, String message) {
         if (validationService.validatePhoneNumber(user.getPhone())) {
             log.info(message);
-            log.info("SMS message {} sent to the customer {}", message, user.getNationalIdNumber());
+            log.info("SMS message {} sent to the user {}", message, user.getNationalIdNumber());
         } else {
-            log.warn("Customer phone number is missing or wrong format to send sms notification");
+            log.warn("User phone number is missing or wrong format to send sms notification");
         }
     }
 }
