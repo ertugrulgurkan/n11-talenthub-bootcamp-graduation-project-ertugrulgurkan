@@ -16,11 +16,12 @@ Returns a User with National Id Param.
 
 ```json
 {
-  "nationalIdNumber": "13241052421",
+  "nationalIdNumber": "13241052428",
   "birthDate": "1997-08-19",
-  "name": "ERTUĞRUL AYVAZ",
+  "name": "Ertuğrul Ayvaz",
   "surname": "Gürkan",
-  "phone": "2126132008"
+  "phone": "05375043264",
+  "monthlyIncome": 5000.0
 }
 ```
 

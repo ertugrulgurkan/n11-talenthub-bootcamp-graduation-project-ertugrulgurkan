@@ -1,6 +1,6 @@
 package com.ertugrul.credit.controller;
 
-import com.ertugrul.credit.dto.UserRequestDto;
+import com.ertugrul.credit.dto.UserUpdateRequestDto;
 import com.ertugrul.credit.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +30,8 @@ public class UserController {
 
     //PUT http://localhost:8080/api/v1/users/13241052323'
     @PutMapping("/{nationalIdNumber}")
-    public ResponseEntity<Object> update(@Valid @RequestBody UserRequestDto userRequestDto, @PathVariable String nationalIdNumber) {
-        return ResponseEntity.ok(userService.update(userRequestDto, nationalIdNumber));
+    public ResponseEntity<Object> update(@Valid @RequestBody UserUpdateRequestDto userUpdateRequestDto, @PathVariable String nationalIdNumber) {
+        return ResponseEntity.ok(userService.update(userUpdateRequestDto, nationalIdNumber));
     }
 
     //DELETE http://localhost:8080/api/v1/users/13241052323

@@ -15,27 +15,20 @@ Returns a list of Users.
 **Sample Response Body** :
 
 ```
-[
   {
-    "nationalIdNumber": "13546052424",
+    "nationalIdNumber": "13245268547",
     "birthDate": "1997-08-19",
-    "name": "Ertuğrul Ayvaz",
-    "surname": "Gürkan",
-    "phone": "5346875548"
+    "name": "Eray",
+    "surname": "Çavdar",
+    "phone": "5345587754",
+    "monthlyIncome": 5000.0,
   },
   {
-    "nationalIdNumber": "83241003625",
-    "birthDate": "1980-01-24",
+    "nationalIdNumber": "10527545450",
+    "birthDate": "1997-08-19",
     "name": "Ozan",
-    "surname": "Çetin",
-    "phone": "5348854475"
-  },
-  {
-    "nationalIdNumber": "53241003625",
-    "birthDate": "1975-01-24",
-    "name": "Mustafa",
     "surname": "Yılmaz",
-    "phone": "5346658899"
+    "phone": "5747548547",
+    "monthlyIncome": 12000.0,
   }
-]
 ```

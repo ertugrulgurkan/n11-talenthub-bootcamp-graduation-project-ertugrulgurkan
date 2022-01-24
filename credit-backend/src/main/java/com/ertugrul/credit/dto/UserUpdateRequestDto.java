@@ -6,11 +6,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-public class UserResponseDto implements Serializable {
-    private final String nationalIdNumber;
+public class UserUpdateRequestDto implements Serializable {
     private final LocalDate birthDate;
     private final String name;
     private final String surname;
     private final String phone;
-    private final Double monthlyIncome;
 }

@@ -38,7 +38,7 @@ public class CreditApplicationServiceImpl implements CreditApplicationService {
         CreditApplication creditApplication = CreditApplicationMapper.INSTANCE.convertCreditApplicationRequestDtoToCreditApplication(creditApplicationRequestDto);
         saveCreditApplicationUser(creditApplication);
         fillCreditApplicationEntity(creditApplication);
-        CreditApplication savedApplication = saveApplication(creditApplication);
+        CreditApplication savedApplication = saveCreditApplication(creditApplication);
         notifyUser(savedApplication);
         return CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(savedApplication);
     }
@@ -77,14 +77,12 @@ public class CreditApplicationServiceImpl implements CreditApplicationService {
         userNotificationService.notifyUser(creditApplication.getUser(), notifyMessage.toString());
     }
 
-    private CreditApplication saveApplication(CreditApplication creditApplication) {
+    private CreditApplication saveCreditApplication(CreditApplication creditApplication) {
         return creditApplicationEntityService.save(creditApplication);
     }
 
     private void saveCreditApplicationUser(CreditApplication creditApplication) {
         userService.saveUserToEntity(creditApplication.getUser());
     }
-
-
 
 }

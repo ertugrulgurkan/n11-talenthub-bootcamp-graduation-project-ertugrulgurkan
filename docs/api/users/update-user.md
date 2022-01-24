@@ -10,11 +10,10 @@ Updates a User.
 
 ```json
 {
-  "nationalIdNumber": "13241052420",
   "birthDate": "1997-01-24",
   "name": "Ertuğrul",
-  "surname": "Gürkan",
-  "phone": "5348852269"
+  "surname": "Yılmaz",
+  "phone": "5346632268"
 }
 ```
 
@@ -26,11 +25,12 @@ Updates a User.
 
 ```json
 {
-  "nationalIdNumber": "13241052420",
+  "nationalIdNumber": "13241052428",
   "birthDate": "1997-01-24",
   "name": "Ertuğrul",
-  "surname": "Gürkan",
-  "phone": "5348852269"
+  "surname": "Yılmaz",
+  "phone": "5346632268",
+  "monthlyIncome": 5000
 }
 ```
 
