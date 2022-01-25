@@ -33,6 +33,8 @@ public class UserServiceImpl implements UserService {
         Optional<User> byNationalIdNumber = userEntityService.findByNationalIdNumber(user.getNationalIdNumber());
         if (byNationalIdNumber.isPresent())
             throw new UserAlreadyExistException("User has already exist.");
+        validationService.validateUserNotExist(byNationalIdNumber);
+        validationService.validateNationalIdNumber(user.getNationalIdNumber());
         return userEntityService.save(user);
     }
 

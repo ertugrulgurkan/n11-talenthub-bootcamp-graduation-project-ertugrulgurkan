@@ -11,4 +11,8 @@ public interface ValidationService {
     CreditApplication validateCreditApplication(Optional<CreditApplication> creditApplication);
 
     Boolean validatePhoneNumber(String phoneNumber);
+
+    Boolean validateNationalIdNumber(String nationalIdNumber);
+
+    Boolean validateUserNotExist(Optional<User> byNationalIdNumber);
 }

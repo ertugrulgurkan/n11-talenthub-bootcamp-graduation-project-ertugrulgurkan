@@ -52,6 +52,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleNationalIdNumberException(NationalIdNumberNotValidException ex, WebRequest webRequest) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex.getMessage());
+        log.warn(apiError.toString());
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
     @ExceptionHandler({ConstraintViolationException.class, TransactionSystemException.class})
     public ResponseEntity<Object> handleConstraintViolation(
             ConstraintViolationException ex, WebRequest request) {

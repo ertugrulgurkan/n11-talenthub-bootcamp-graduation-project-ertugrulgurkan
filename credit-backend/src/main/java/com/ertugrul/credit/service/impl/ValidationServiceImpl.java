@@ -3,6 +3,8 @@ package com.ertugrul.credit.service.impl;
 import com.ertugrul.credit.entity.CreditApplication;
 import com.ertugrul.credit.entity.User;
 import com.ertugrul.credit.exception.CreditApplicationNotFoundException;
+import com.ertugrul.credit.exception.NationalIdNumberNotValidException;
+import com.ertugrul.credit.exception.UserAlreadyExistException;
 import com.ertugrul.credit.exception.UserNotFoundException;
 import com.ertugrul.credit.service.ValidationService;
 import org.springframework.stereotype.Service;
@@ -36,4 +38,21 @@ public class ValidationServiceImpl implements ValidationService {
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();
     }
+
+    @Override
+    public Boolean validateNationalIdNumber(String nationalIdNumber){
+        Pattern pattern = Pattern.compile("^\\d{11}$");
+        Matcher matcher = pattern.matcher(nationalIdNumber);
+        if (!matcher.matches())
+            throw new NationalIdNumberNotValidException("National Id is not valid");
+        return matcher.matches();
+    }
+
+    @Override
+    public Boolean validateUserNotExist(Optional<User> byNationalIdNumber) {
+        if (byNationalIdNumber.isPresent())
+            throw new UserAlreadyExistException("User has already exist.");
+        return Boolean.TRUE;
+    }
+
 }
