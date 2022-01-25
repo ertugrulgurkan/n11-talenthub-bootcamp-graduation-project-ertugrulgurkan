@@ -1,10 +1,12 @@
 package com.ertugrul.credit.service.impl;
 
+import com.ertugrul.credit.component.notifyMessage.NotifyMessage;
 import com.ertugrul.credit.dto.CreditApplicationRequestDto;
 import com.ertugrul.credit.dto.CreditApplicationResultDto;
 import com.ertugrul.credit.entity.CreditApplication;
 import com.ertugrul.credit.entity.User;
 import com.ertugrul.credit.enums.CreditApplicationResult;
+import com.ertugrul.credit.factory.NotifyMessageFactory;
 import com.ertugrul.credit.mapper.CreditApplicationMapper;
 import com.ertugrul.credit.rule.CreditAmountCalculator;
 import com.ertugrul.credit.service.CreditApplicationService;
@@ -65,17 +67,9 @@ public class CreditApplicationServiceImpl implements CreditApplicationService {
 
     private void notifyUser(CreditApplication creditApplication) {
         User user = creditApplication.getUser();
-        StringBuilder notifyMessage = new StringBuilder();
-        notifyMessage.append("Dear ").append(user.getName()).append(" ").append(user.getSurname()).append(", ");
-        notifyMessage.append("your credit application has been ");
-        notifyMessage.append(creditApplication.getCreditApplicationResult()).append(". ");
-        if (CreditApplicationResult.APPROVED.equals(creditApplication.getCreditApplicationResult())) {
-            notifyMessage.append("Your credit limit: ");
-            notifyMessage.append(creditApplication.getCreditLimitAmount());
-            notifyMessage.append(". ");
-        }
-        notifyMessage.append("Thank you for your application.");
-        userNotificationService.notifyUser(creditApplication.getUser(), notifyMessage.toString());
+        NotifyMessage notifyMessage = NotifyMessageFactory.getNotifyMessage(creditApplication.getCreditApplicationResult().getResult());
+        String generatedMessage = notifyMessage.getMessage(user.getName() + " " + user.getSurname(), creditApplication.getCreditLimitAmount());
+        userNotificationService.notifyUser(creditApplication.getUser(), generatedMessage);
     }
 
     private CreditApplication saveCreditApplication(CreditApplication creditApplication) {
