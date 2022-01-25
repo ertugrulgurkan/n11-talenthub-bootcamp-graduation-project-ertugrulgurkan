@@ -13,7 +13,8 @@ import org.mockito.InjectMocks;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 class ValidationServiceTest {
 
@@ -22,75 +23,73 @@ class ValidationServiceTest {
 
     @BeforeEach
     void setUp() {
-        validationService = mock(ValidationServiceImpl.class);
+        validationService = new ValidationServiceImpl();
     }
 
     @Test
     void shouldValidateUser() {
-        Optional<User> optionalUser = Optional.of(new User());
         User user = new User();
-
-        when(validationService.validateUser(optionalUser)).thenReturn(user);
+        Optional<User> optionalUser = Optional.of(user);
+        assertEquals(user, validationService.validateUser(optionalUser));
     }
 
     @Test
     void shouldNotValidateUser() {
         Optional<User> optionalUser = Optional.empty();
-        when(validationService.validateUser(optionalUser)).thenThrow(new UserNotFoundException(""));
+        assertThrows(UserNotFoundException.class,()-> validationService.validateUser(optionalUser));
     }
 
     @Test
     void shouldValidateCreditApplication() {
-        Optional<CreditApplication> optionalCreditApplication = Optional.of(new CreditApplication());
         CreditApplication creditApplication = new CreditApplication();
-
-        when(validationService.validateCreditApplication(optionalCreditApplication)).thenReturn(creditApplication);
+        Optional<CreditApplication> optionalCreditApplication = Optional.of(creditApplication);
+        assertEquals(creditApplication, validationService.validateCreditApplication(optionalCreditApplication));
     }
 
     @Test
     void shouldNotValidateCreditApplication() {
         Optional<CreditApplication> creditApplication = Optional.empty();
-
-        when(validationService.validateCreditApplication(creditApplication)).thenThrow(new CreditApplicationNotFoundException(""));
+        assertThrows(CreditApplicationNotFoundException.class,()-> validationService.validateCreditApplication(creditApplication));
     }
 
     @Test
     void shouldValidatePhoneNumber() {
         String phone = "5346632260";
-        when(validationService.validatePhoneNumber(phone)).thenReturn(true);
+        assertEquals(Boolean.TRUE, validationService.validatePhoneNumber(phone));
 
     }
 
     @Test
     void shouldNotValidatePhoneNumber() {
         String phone = "abx4-?260";
-        when(validationService.validatePhoneNumber(phone)).thenThrow(new UserNotFoundException(""));
+        assertEquals(Boolean.FALSE,validationService.validatePhoneNumber(phone));
     }
 
 
     @Test
     void shouldValidateNationalIdNumber() {
         String nationalId = "13241052426";
-        when(validationService.validateNationalIdNumber(nationalId)).thenReturn(true);
+        assertEquals(Boolean.TRUE, validationService.validateNationalIdNumber(nationalId));
+
     }
 
     @Test
     void shouldNotValidateNationalIdNumber() {
         String nationalIdNumber = "abx4-?260";
-        when(validationService.validateNationalIdNumber(nationalIdNumber)).thenThrow(new NationalIdNumberNotValidException(""));
+        assertThrows(NationalIdNumberNotValidException.class,()-> validationService.validateNationalIdNumber(nationalIdNumber));
     }
 
 
     @Test
     void shouldValidateUserNotExist() {
-        Optional<User> optionalUser = Optional.of(new User());
-        when(validationService.validateUserNotExist(optionalUser)).thenThrow(new UserAlreadyExistException(""));
+        Optional<User> optionalUser = Optional.empty();
+        assertEquals(Boolean.TRUE, validationService.validateUserNotExist(optionalUser));
     }
 
     @Test
     void shouldNotValidateUserNotExist() {
-        Optional<User> optionalUser = Optional.empty();
-        when(validationService.validateUserNotExist(optionalUser)).thenThrow(new UserAlreadyExistException(""));
+        Optional<User> optionalUser = Optional.of(new User());
+        assertThrows(UserAlreadyExistException.class,()-> validationService.validateUserNotExist(optionalUser));
     }
 
 }

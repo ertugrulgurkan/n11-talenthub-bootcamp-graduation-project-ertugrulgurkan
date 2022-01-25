@@ -1,14 +1,11 @@
 package com.ertugrul.credit.service;
 
 import com.ertugrul.credit.service.impl.CreditScoreServiceImpl;
-import com.ertugrul.credit.service.impl.ValidationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class CreditScoreServiceTest {
 
@@ -17,16 +14,21 @@ class CreditScoreServiceTest {
 
     @BeforeEach
     void setUp() {
-        creditScoreService = mock(CreditScoreServiceImpl.class);
+        creditScoreService = new CreditScoreServiceImpl();
     }
 
     @Test
     void shouldCalculateCreditScoreZeroWithNullParams() {
-        when(creditScoreService.calculateCreditScore(null, null)).thenReturn(0L);
+        assertEquals( 0L, creditScoreService.calculateCreditScore((double) 0L, null));
     }
 
     @Test
-    void shouldCalculateCreditScoreZeroZeroNullParams() {
-        when(creditScoreService.calculateCreditScore((double) 0L, "13241052420")).thenReturn(0L);
+    void shouldCalculateCreditScoreWithZeroIncomeParam() {
+        assertEquals( 0L, creditScoreService.calculateCreditScore((double) 0L, "13241052420"));
+    }
+    @Test
+    void shouldCalculateCreditScore() {
+        long l = creditScoreService.calculateCreditScore((double) 15000, "13241052425");
+        assertTrue(l > 0);
     }
 }
