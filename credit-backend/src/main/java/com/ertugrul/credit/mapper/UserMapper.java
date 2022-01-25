@@ -24,7 +24,7 @@ public interface UserMapper {
     User convertUserUpdateRequestDtoToUser(UserUpdateRequestDto UserUpdateRequestDto);
 
     @Mapping(target = "monthlyIncome", source = "creditApplication.monthlyIncome")
-    UserResponseDto convertUserResponseDtoToUser(User user);
+    UserResponseDto convertUserToUserResponseDto(User user);
 
     @Mapping(source = "monthlyIncome", target = "creditApplication.monthlyIncome")
     User convertUserResponseDtoToUser(UserResponseDto UserResponseDto);

@@ -49,8 +49,8 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    public Boolean validateUserNotExist(Optional<User> byNationalIdNumber) {
-        if (byNationalIdNumber.isPresent())
+    public Boolean validateUserNotExist(Optional<User> optionalUser) {
+        if (optionalUser.isPresent())
             throw new UserAlreadyExistException("User has already exist.");
         return Boolean.TRUE;
     }

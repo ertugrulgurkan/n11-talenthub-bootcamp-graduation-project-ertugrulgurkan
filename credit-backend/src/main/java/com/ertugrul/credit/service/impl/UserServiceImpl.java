@@ -3,7 +3,6 @@ package com.ertugrul.credit.service.impl;
 import com.ertugrul.credit.dto.UserResponseDto;
 import com.ertugrul.credit.dto.UserUpdateRequestDto;
 import com.ertugrul.credit.entity.User;
-import com.ertugrul.credit.exception.UserAlreadyExistException;
 import com.ertugrul.credit.mapper.UserMapper;
 import com.ertugrul.credit.service.UserService;
 import com.ertugrul.credit.service.ValidationService;
@@ -30,10 +29,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(Transactional.TxType.REQUIRED)
     @Override
     public User saveUserToEntity(User user) {
-        Optional<User> byNationalIdNumber = userEntityService.findByNationalIdNumber(user.getNationalIdNumber());
-        if (byNationalIdNumber.isPresent())
-            throw new UserAlreadyExistException("User has already exist.");
-        validationService.validateUserNotExist(byNationalIdNumber);
+        Optional<User> userOptional = userEntityService.findByNationalIdNumber(user.getNationalIdNumber());
+        validationService.validateUserNotExist(userOptional);
         validationService.validateNationalIdNumber(user.getNationalIdNumber());
         return userEntityService.save(user);
     }
@@ -45,13 +42,13 @@ public class UserServiceImpl implements UserService {
         User user = findUserByNationalIdNumber(nationalIdNumber);
         fillUserProperties(userRequestEntity, user);
         User updatedUser = userEntityService.save(user);
-        return UserMapper.INSTANCE.convertUserResponseDtoToUser(updatedUser);
+        return UserMapper.INSTANCE.convertUserToUserResponseDto(updatedUser);
     }
 
     @Override
     public UserResponseDto findByNationalIdNumber(String nationalIdNumber) {
         User userByNationalIdNumber = findUserByNationalIdNumber(nationalIdNumber);
-        return UserMapper.INSTANCE.convertUserResponseDtoToUser(userByNationalIdNumber);
+        return UserMapper.INSTANCE.convertUserToUserResponseDto(userByNationalIdNumber);
     }
 
     @Transactional
