@@ -1,6 +1,5 @@
 package com.ertugrul.credit.rule;
 
-import com.ertugrul.credit.entity.CreditApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

@@ -10,18 +10,11 @@ import java.util.Map;
 
 @Service
 public class NotifyMessageFactory {
-    private final List<NotifyMessage> notifyMessages;
     private static final Map<String, NotifyMessage> notifyMessageCache = new HashMap<>();
+    private final List<NotifyMessage> notifyMessages;
 
     public NotifyMessageFactory(List<NotifyMessage> notifyMessages) {
         this.notifyMessages = notifyMessages;
-    }
-
-    @PostConstruct
-    public void initNotifyMessageCache() {
-        for (NotifyMessage message : notifyMessages) {
-            notifyMessageCache.put(message.getType(), message);
-        }
     }
 
     public static NotifyMessage getNotifyMessage(String type) {
@@ -29,5 +22,12 @@ public class NotifyMessageFactory {
         if (service == null) throw new RuntimeException("Unknown notify message type: " + type);
         return service;
 
+    }
+
+    @PostConstruct
+    public void initNotifyMessageCache() {
+        for (NotifyMessage message : notifyMessages) {
+            notifyMessageCache.put(message.getType(), message);
+        }
     }
 }

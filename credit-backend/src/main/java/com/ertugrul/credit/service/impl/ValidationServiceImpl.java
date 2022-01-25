@@ -40,7 +40,7 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    public Boolean validateNationalIdNumber(String nationalIdNumber){
+    public Boolean validateNationalIdNumber(String nationalIdNumber) {
         Pattern pattern = Pattern.compile("^\\d{11}$");
         Matcher matcher = pattern.matcher(nationalIdNumber);
         if (!matcher.matches())

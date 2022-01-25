@@ -5,7 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CreditScoreServiceTest {
 
@@ -19,13 +20,14 @@ class CreditScoreServiceTest {
 
     @Test
     void shouldCalculateCreditScoreZeroWithNullParams() {
-        assertEquals( 0L, creditScoreService.calculateCreditScore((double) 0L, null));
+        assertEquals(0L, creditScoreService.calculateCreditScore((double) 0L, null));
     }
 
     @Test
     void shouldCalculateCreditScoreWithZeroIncomeParam() {
-        assertEquals( 0L, creditScoreService.calculateCreditScore((double) 0L, "13241052420"));
+        assertEquals(0L, creditScoreService.calculateCreditScore((double) 0L, "13241052420"));
     }
+
     @Test
     void shouldCalculateCreditScore() {
         long l = creditScoreService.calculateCreditScore((double) 15000, "13241052425");
