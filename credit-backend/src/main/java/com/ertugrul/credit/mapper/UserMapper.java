@@ -1,6 +1,5 @@
 package com.ertugrul.credit.mapper;
 
-import com.ertugrul.credit.dto.UserRequestDto;
 import com.ertugrul.credit.dto.UserResponseDto;
 import com.ertugrul.credit.dto.UserUpdateRequestDto;
 import com.ertugrul.credit.entity.User;
@@ -15,11 +14,7 @@ import java.util.List;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserRequestDto convertUserRequestDtoToUser(User user);
-
     UserUpdateRequestDto convertUserToUserToUserUpdateRequestDto(User user);
-
-    User convertUserRequestDtoToUser(UserRequestDto UserRequestDto);
 
     User convertUserUpdateRequestDtoToUser(UserUpdateRequestDto UserUpdateRequestDto);
 
@@ -28,10 +23,6 @@ public interface UserMapper {
 
     @Mapping(source = "monthlyIncome", target = "creditApplication.monthlyIncome")
     User convertUserResponseDtoToUser(UserResponseDto UserResponseDto);
-
-    List<UserRequestDto> convertAllUserRequestDtoToUser(List<User> userList);
-
-    List<User> convertAllUserToUserRequestDto(List<UserRequestDto> userRequestDtoList);
 
     @Mapping(source = "monthlyIncome", target = "creditApplication.monthlyIncome")
     List<User> convertAllUserResponseDtoToUser(List<UserResponseDto> userList);
