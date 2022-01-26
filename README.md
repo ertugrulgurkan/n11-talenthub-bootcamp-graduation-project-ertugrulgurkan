@@ -23,7 +23,7 @@ git clone https://github.com/n11-TalentHub-Java-Bootcamp/n11-talenthub-bootcamp-
 **2. Go to the project directory**
 ```bash
 cd n11-talenthub-bootcamp-graduation-project-ertugrulgurkan
-cd cd credit-backend
+cd credit-backend
 ```
 **3. Run**
 ```bash
@@ -39,7 +39,7 @@ git clone https://github.com/n11-TalentHub-Java-Bootcamp/n11-talenthub-bootcamp-
 ```bash
 cd n11-talenthub-bootcamp-graduation-project-ertugrulgurkan
 cd n11-talenthub-bootcamp-graduation-project-ertugrulgurkan
-cd cd credit-backend
+cd credit-backend
 ```
 **3. Run**
 ```bash

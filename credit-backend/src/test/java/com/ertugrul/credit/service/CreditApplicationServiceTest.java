@@ -55,45 +55,22 @@ class CreditApplicationServiceTest {
     }
 
     @Test
-    void saveCreditApplication() {
-        CreditApplication expectedCreditApplication = getCreditApplication();
-
-        List<NotifyMessage> notifyMessages = new ArrayList<>();
-        notifyMessages.add(new ApprovedNotifyMessage());
-        notifyMessages.add(new RejectedNotifyMessage());
-        notifyMessageFactory = new NotifyMessageFactory(notifyMessages);
-        notifyMessageFactory.initNotifyMessageCache();
-
-        CreditApplicationRequestDto creditApplicationRequestDto = CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationRequestDto(expectedCreditApplication);
-        when(userService.saveUserToEntity(any())).thenReturn(expectedCreditApplication.getUser());
-        when(creditScoreService.calculateCreditScore(expectedCreditApplication.getMonthlyIncome(), expectedCreditApplication.getUser().getNationalIdNumber())).thenReturn(expectedCreditApplication.getCreditScore());
-        when(creditAmountCalculator.getCreditLimitAmount(expectedCreditApplication.getCreditScore(), expectedCreditApplication.getMonthlyIncome(), expectedCreditApplication.getAssurance())).thenReturn(expectedCreditApplication.getCreditLimitAmount());
-        when(creditApplicationEntityService.save(any(CreditApplication.class))).thenReturn(expectedCreditApplication);
-        //when(notifyMessageFactory.getNotifyMessage(any())).thenReturn(new ApprovedNotifyMessage());
-        CreditApplicationResultDto expected = CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(expectedCreditApplication);
-
-        CreditApplicationResultDto actual = creditApplicationService.saveCreditApplication(creditApplicationRequestDto);
-
-        assertAll(
-                () -> assertNotNull(actual),
-                () -> assertEquals(expected, actual)
-        );
+    void saveApprovedCreditApplication() {
+        CreditApplication expectedCreditApplication = getApprovedCreditApplication();
+        saveCreditApplication(expectedCreditApplication);
     }
 
-    /*
-        CreditApplication creditApplication = CreditApplicationMapper.INSTANCE.convertCreditApplicationRequestDtoToCreditApplication(creditApplicationRequestDto);
-        saveCreditApplicationUser(creditApplication);
-        long creditScore = creditScoreService.calculateCreditScore(creditApplication.getMonthlyIncome(), creditApplication.getUser().getNationalIdNumber());
-        double creditAmount = creditAmountCalculator.getCreditLimitAmount(creditScore, creditApplication.getMonthlyIncome(), creditApplication.getAssurance());
-        CreditApplicationResult creditApplicationResult = creditAmount > 0 ? CreditApplicationResult.APPROVED : CreditApplicationResult.REJECTED;
-        fillCreditApplicationEntity(creditApplication, creditScore, creditAmount, creditApplicationResult);
-        CreditApplication savedApplication = saveCreditApplication(creditApplication);
-        notifyUser(savedApplication);
-        return CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(savedApplication);*/
+
+    @Test
+    void saveRejectedCreditApplication() {
+        CreditApplication expectedCreditApplication = getRejectedCreditApplication();
+        saveCreditApplication(expectedCreditApplication);
+    }
+
 
     @Test
     void findCreditApplicationByNationalIdNumberAndBirthDate() {
-        CreditApplication expectedCreditApplication = getCreditApplication();
+        CreditApplication expectedCreditApplication = getApprovedCreditApplication();
 
         when(creditApplicationEntityService.findCreditApplicationByNationalIdNumberAndBirthDate(expectedCreditApplication.getUser().getNationalIdNumber(), expectedCreditApplication.getUser().getBirthDate())).thenReturn(Optional.of(expectedCreditApplication));
         when(validationService.validateCreditApplication(Optional.of(expectedCreditApplication))).thenReturn(expectedCreditApplication);
@@ -105,7 +82,24 @@ class CreditApplicationServiceTest {
                 () -> assertNotNull(actual),
                 () -> assertEquals(expected, actual)
         );
+    }
 
+
+
+    private void saveCreditApplication(CreditApplication expectedCreditApplication) {
+        initNotifyFactory();
+        CreditApplicationRequestDto creditApplicationRequestDto = CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationRequestDto(expectedCreditApplication);
+        when(userService.saveUserToEntity(any())).thenReturn(expectedCreditApplication.getUser());
+        when(creditScoreService.calculateCreditScore(expectedCreditApplication.getMonthlyIncome(), expectedCreditApplication.getUser().getNationalIdNumber())).thenReturn(expectedCreditApplication.getCreditScore());
+        when(creditAmountCalculator.getCreditLimitAmount(expectedCreditApplication.getCreditScore(), expectedCreditApplication.getMonthlyIncome(), expectedCreditApplication.getAssurance())).thenReturn(expectedCreditApplication.getCreditLimitAmount());
+        when(creditApplicationEntityService.save(any(CreditApplication.class))).thenReturn(expectedCreditApplication);
+        CreditApplicationResultDto expected = CreditApplicationMapper.INSTANCE.convertCreditApplicationToCreditApplicationResultDto(expectedCreditApplication);
+        CreditApplicationResultDto actual = creditApplicationService.saveCreditApplication(creditApplicationRequestDto);
+
+        assertAll(
+                () -> assertNotNull(actual),
+                () -> assertEquals(expected, actual)
+        );
     }
 
     private User getUser() {
@@ -119,7 +113,7 @@ class CreditApplicationServiceTest {
     }
 
 
-    private CreditApplication getCreditApplication() {
+    private CreditApplication getApprovedCreditApplication() {
         CreditApplication creditApplication = new CreditApplication();
         creditApplication.setUser(getUser());
         creditApplication.setCreditScore(750L);
@@ -127,6 +121,24 @@ class CreditApplicationServiceTest {
         creditApplication.setCreditApplicationResult(CreditApplicationResult.APPROVED);
         creditApplication.setCreditLimitAmount(35000.0);
         return creditApplication;
+    }
+
+    private CreditApplication getRejectedCreditApplication() {
+        CreditApplication creditApplication = new CreditApplication();
+        creditApplication.setUser(getUser());
+        creditApplication.setCreditScore(300L);
+        creditApplication.setMonthlyIncome(12000.0);
+        creditApplication.setCreditApplicationResult(CreditApplicationResult.REJECTED);
+        creditApplication.setCreditLimitAmount(0.0);
+        return creditApplication;
+    }
+
+    private void initNotifyFactory() {
+        List<NotifyMessage> notifyMessages = new ArrayList<>();
+        notifyMessages.add(new ApprovedNotifyMessage());
+        notifyMessages.add(new RejectedNotifyMessage());
+        notifyMessageFactory = new NotifyMessageFactory(notifyMessages);
+        notifyMessageFactory.initNotifyMessageCache();
     }
 
 }
