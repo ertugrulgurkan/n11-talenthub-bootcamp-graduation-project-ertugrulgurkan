@@ -20,7 +20,7 @@ public interface CreditApplicationMapper {
     @Mapping(target = "surname", source = "user.surname")
     @Mapping(target = "phone", source = "user.phone")
     @Mapping(target = "birthDate", source = "user.birthDate")
-    CreditApplicationRequestDto convertCreditApplicationRequestDtoToCreditApplication(CreditApplication creditApplication);
+    CreditApplicationRequestDto convertCreditApplicationToCreditApplicationRequestDto(CreditApplication creditApplication);
 
     @Mapping(source = "nationalIdNumber", target = "user.nationalIdNumber")
     @Mapping(source = "name", target = "user.name")

@@ -20,5 +20,4 @@ public class RejectedNotifyMessage implements NotifyMessage {
                 .append("Thank you for your application.");
         return notifyMessage.toString();
     }
-
 }

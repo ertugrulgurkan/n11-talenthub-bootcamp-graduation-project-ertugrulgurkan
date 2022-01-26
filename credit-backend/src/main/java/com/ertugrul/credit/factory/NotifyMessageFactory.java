@@ -18,10 +18,9 @@ public class NotifyMessageFactory {
     }
 
     public static NotifyMessage getNotifyMessage(String type) {
-        NotifyMessage service = notifyMessageCache.get(type);
-        if (service == null) throw new RuntimeException("Unknown notify message type: " + type);
-        return service;
-
+        NotifyMessage message = notifyMessageCache.get(type);
+        if (message == null) throw new RuntimeException("Unknown notify message type: " + type);
+        return message;
     }
 
     @PostConstruct
