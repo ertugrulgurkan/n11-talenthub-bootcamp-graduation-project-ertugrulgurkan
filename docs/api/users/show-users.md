@@ -2,7 +2,7 @@
 
 Returns a list of Users.
 
-**URL** : `/api/v1/users`
+**URL** : `/api/v1/users/`
 
 **Method** : `GET`
 
@@ -10,7 +10,7 @@ Returns a list of Users.
 
 **Code** : `200 OK`
 
-**Request URL** : `/api/v1/users`
+**Request URL** : `/api/v1/users/`
 
 **Sample Response Body** :
 
